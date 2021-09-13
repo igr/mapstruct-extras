@@ -1,0 +1,75 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    withSourcesJar()
+    withJavadocJar()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    implementation 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = parent.ext.groupId
+            artifactId = 'with-not-fluent'
+            version = '1.0.0'
+
+            from components.java
+
+            pom {
+                name = 'MapStruct With Not Fluent'
+                description = '@With is not part of a fluent interface'
+                url = 'https://github.com/igr/mapstruct-extras'
+                organization {
+                    name = 'Oblac'
+                    url = 'https://oblac.com'
+                }
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/igr/mapstruct-extras/issues'
+                }
+                licenses {
+                    license {
+                        name = 'The New BSD License'
+                        url = 'https://github.com/igr/mapstruct-extras/blob/master/LICENSE'
+                        distribution = 'repo'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/igr/mapstruct-extras'
+                    connection = 'scm:git:git://github.com/igr/mapstruct-extras.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/igr/mapstruct-extras.git'
+                }
+                developers {
+                    developer {
+                        id = 'igor'
+                        name = 'Igor Spasić'
+                        email = 'igor@jodd.org'
+                        timezone = '+1'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task install() {
+    dependsOn publishToMavenLocal
+}

@@ -1,2 +1,3 @@
-# mapstruct-extras
-MapStruct extras.
+# MapStruct extras
+
+Various MapStruct extras.

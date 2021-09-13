@@ -1,0 +1,7 @@
+plugins {
+    id 'io.codearte.nexus-staging' version '0.30.0'
+}
+
+ext {
+    groupId = 'com.oblac.mapstruct'
+}
