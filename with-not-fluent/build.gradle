@@ -71,5 +71,21 @@ publishing {
 }
 
 task install() {
+    group 'Project'
     dependsOn publishToMavenLocal
+}
+
+ext.admin = hasProperty('sonatypeUsername')
+
+signing {
+    required { admin }
+    sign publishing.publications.maven
+}
+
+task release() {
+    group 'Project'
+    description 'Builds everything for the release.'
+
+    dependsOn build
+    dependsOn javadoc
 }
