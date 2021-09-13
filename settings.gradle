@@ -1,2 +1,0 @@
-rootProject.name = 'mapstruct-extras'
-include('with-not-fluent')

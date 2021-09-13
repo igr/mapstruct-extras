@@ -2,11 +2,15 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
+    id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 repositories {
     mavenCentral()
 }
+
+group = 'com.oblac.mapstruct'
+version = '1.0.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -24,13 +28,12 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+ext.admin = hasProperty('sonatypeUsername')
+
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = parent.ext.groupId
             artifactId = 'with-not-fluent'
-            version = '1.0.0'
-
             from components.java
 
             pom {
@@ -47,7 +50,7 @@ publishing {
                 }
                 licenses {
                     license {
-                        name = 'The New BSD License'
+                        name = 'BSD-2-Clause'
                         url = 'https://github.com/igr/mapstruct-extras/blob/master/LICENSE'
                         distribution = 'repo'
                     }
@@ -68,14 +71,23 @@ publishing {
             }
         }
     }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            if (admin) {
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
+            }
+        }
+    }
 }
 
 task install() {
     group 'Project'
     dependsOn publishToMavenLocal
 }
-
-ext.admin = hasProperty('sonatypeUsername')
 
 signing {
     required { admin }
